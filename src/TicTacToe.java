@@ -434,9 +434,5 @@ public class TicTacToe implements ActionListener {
         if (count == 9) {
             textfield.setText("draw");
         }
-
-        // for (int i = 0; i < 9; i++){
-        // buttons[i].setEnabled(false);
-        // }
     }
 }
