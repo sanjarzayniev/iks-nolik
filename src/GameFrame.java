@@ -6,7 +6,7 @@ import java.awt.event.*;
 class GameFrame extends JFrame {
     boolean firstPlayerTurn;
 
-    final int FRAME_SIZE = 500, SLEEP_TIME = 2000;
+    final int FRAME_SIZE = 600, SLEEP_TIME = 2000;
 
     Random random = new Random();
     JPanel title_panel = new JPanel(), button_panel = new JPanel();
@@ -47,7 +47,7 @@ class GameFrame extends JFrame {
         textfield.setForeground(new Color(25, 255, 0));
         textfield.setFont(new Font("Ink Free", Font.BOLD, 30));
         textfield.setHorizontalAlignment(JLabel.CENTER);
-        textfield.setText("Tic-Tac-Toe Project");
+        textfield.setText("Tic-Tac-Toe");
     }
 
     void initGameBoard() {
@@ -191,18 +191,6 @@ class GameFrame extends JFrame {
         textfield.setText("O wins");
     }
 
-    public void draw() {
-        int count = 0;
-        for (int i = 0; i < 9; i++) {
-            if (buttons[i] != null) {
-                count = count + 1;
-            }
-        }
-        if (count == 9) {
-            textfield.setText("draw");
-        }
-    }
-
     class ButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -215,6 +203,11 @@ class GameFrame extends JFrame {
                             firstPlayerTurn = false;
                             textfield.setText("O turn");
                             check();
+                        } else {
+                            for (int j = 0; j < 9; j++) {
+                                buttons[j].setEnabled(false);
+                            }
+                            textfield.setText("draw");
                         }
                     }
 
@@ -225,6 +218,11 @@ class GameFrame extends JFrame {
                             firstPlayerTurn = true;
                             textfield.setText("X turn");
                             check();
+                        } else {
+                            for (int j = 0; j < 9; j++) {
+                                buttons[j].setEnabled(false);
+                            }
+                            textfield.setText("draw");
                         }
                     }
                 }
