@@ -203,11 +203,6 @@ class GameFrame extends JFrame {
                             firstPlayerTurn = false;
                             textfield.setText("O turn");
                             check();
-                        } else {
-                            for (int j = 0; j < 9; j++) {
-                                buttons[j].setEnabled(false);
-                            }
-                            textfield.setText("draw");
                         }
                     }
 
@@ -218,15 +213,25 @@ class GameFrame extends JFrame {
                             firstPlayerTurn = true;
                             textfield.setText("X turn");
                             check();
-                        } else {
-                            for (int j = 0; j < 9; j++) {
-                                buttons[j].setEnabled(false);
-                            }
-                            textfield.setText("draw");
                         }
                     }
                 }
             }
+            if (isBoardFull()) {
+                for (int i = 0; i < 9; i++) {
+                    buttons[i].setEnabled(false);
+                }
+                textfield.setText("draw");
+            }
+        }
+
+        private boolean isBoardFull() {
+            for (int i = 0; i < 9; i++) {
+                if (buttons[i].getText().equals("")) {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
