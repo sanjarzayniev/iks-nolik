@@ -6,15 +6,12 @@ import java.awt.event.*;
 class GameFrame extends JFrame {
     boolean firstPlayerTurn;
 
-    final int FRAME_SIZE = 600, SLEEP_TIME = 2000;
-
     Random random = new Random();
     JPanel title_panel = new JPanel(), button_panel = new JPanel();
 
     JLabel textfield = new JLabel();
 
-    JButton login = new JButton();
-    JButton[] buttons = new JButton[9];
+    JButton[] buttons = new JButton[Settings.TOTAL_BUTTONS];
 
     GameFrame() {
         initFrame();
@@ -27,9 +24,9 @@ class GameFrame extends JFrame {
 
     void initFrame() {
         setVisible(true);
-        setSize(FRAME_SIZE, FRAME_SIZE);
+        setSize(Settings.FRAME_SIZE, Settings.FRAME_SIZE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(50, 50, 50));
+        getContentPane().setBackground(Settings.black);
         setLayout(new BorderLayout());
     }
 
@@ -38,24 +35,24 @@ class GameFrame extends JFrame {
         title_panel.setBounds(0, 0, 800, 100);
 
         button_panel.setLayout(new GridLayout(3, 3));
-        button_panel.setBackground(new Color(150, 150, 150));
+        button_panel.setBackground(Settings.button_background_color);
     }
 
     void addTextField() {
         textfield.setOpaque(true);
-        textfield.setBackground(new Color(25, 25, 25));
-        textfield.setForeground(new Color(25, 255, 0));
-        textfield.setFont(new Font("Ink Free", Font.BOLD, 30));
+        textfield.setBackground(Settings.text_field_background_color);
+        textfield.setForeground(Settings.text_field_foreground_color);
+        textfield.setFont(Settings.textFieldFont);
         textfield.setHorizontalAlignment(JLabel.CENTER);
         textfield.setText("Tic-Tac-Toe");
     }
 
     void initGameBoard() {
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
             buttons[i] = new JButton();
             button_panel.add(buttons[i]);
-            buttons[i].setFont(new Font("MV Boli", Font.BOLD, 100));
             buttons[i].setFocusable(false);
+            buttons[i].setFont(Settings.buttonFont);
             buttons[i].addActionListener(new ButtonActionListener());
         }
 
@@ -65,12 +62,11 @@ class GameFrame extends JFrame {
         add(button_panel);
 
         startGame();
-
     }
 
     public void startGame() {
         try {
-            Thread.sleep(SLEEP_TIME);
+            Thread.sleep(Settings.SLEEP_TIME);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -170,22 +166,22 @@ class GameFrame extends JFrame {
     }
 
     public void xWins(int a, int b, int c) {
-        buttons[a].setBackground(Color.GREEN);
-        buttons[b].setBackground(Color.GREEN);
-        buttons[c].setBackground(Color.GREEN);
+        buttons[a].setBackground(Settings.button_green_color);
+        buttons[b].setBackground(Settings.button_green_color);
+        buttons[c].setBackground(Settings.button_green_color);
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
             buttons[i].setEnabled(false);
         }
         textfield.setText("X wins");
     }
 
     public void oWins(int a, int b, int c) {
-        buttons[a].setBackground(Color.GREEN);
-        buttons[b].setBackground(Color.GREEN);
-        buttons[c].setBackground(Color.GREEN);
+        buttons[a].setBackground(Settings.button_green_color);
+        buttons[b].setBackground(Settings.button_green_color);
+        buttons[c].setBackground(Settings.button_green_color);
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
             buttons[i].setEnabled(false);
         }
         textfield.setText("O wins");
@@ -194,31 +190,31 @@ class GameFrame extends JFrame {
     class ButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
                 if (event.getSource() == buttons[i]) {
                     if (firstPlayerTurn) {
                         if (buttons[i].getText() == "") {
-                            buttons[i].setForeground(new Color(255, 0, 0));
+                            buttons[i].setForeground(Settings.button_red_color);
                             buttons[i].setText("X");
-                            firstPlayerTurn = false;
                             textfield.setText("O turn");
                             check();
+                            firstPlayerTurn = false;
                         }
                     }
 
                     else {
                         if (buttons[i].getText() == "") {
-                            buttons[i].setForeground(new Color(0, 0, 255));
+                            buttons[i].setForeground(Settings.button_blue_color);
                             buttons[i].setText("O");
-                            firstPlayerTurn = true;
                             textfield.setText("X turn");
                             check();
+                            firstPlayerTurn = true;
                         }
                     }
                 }
             }
             if (isBoardFull()) {
-                for (int i = 0; i < 9; i++) {
+                for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
                     buttons[i].setEnabled(false);
                 }
                 textfield.setText("draw");
@@ -226,7 +222,7 @@ class GameFrame extends JFrame {
         }
 
         private boolean isBoardFull() {
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
                 if (buttons[i].getText().equals("")) {
                     return false;
                 }
