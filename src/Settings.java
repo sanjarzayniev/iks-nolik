@@ -7,7 +7,7 @@ public class Settings {
             SLEEP_TIME = 2000,
             TEXT_FIELD_FONT_SIZE = 30,
             BUTTON_FONT_SIZE = 100;
-    public static Color black = new Color(50, 50, 50),
+    public static Color panel_background = new Color(50, 50, 50),
             text_field_background_color = new Color(25, 25, 25),
             button_background_color = new Color(205, 205, 205),
             text_field_foreground_color = new Color(136, 201, 66),

@@ -24,27 +24,27 @@ class GameFrame extends JFrame {
 
     void initFrame() {
         setVisible(true);
-        setSize(Settings.FRAME_SIZE, Settings.FRAME_SIZE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(Settings.black);
         setLayout(new BorderLayout());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(Settings.FRAME_SIZE, Settings.FRAME_SIZE);
+        setLocationRelativeTo(null);
+        getContentPane().setBackground(Settings.panel_background);
     }
 
     void initPanels() {
         title_panel.setLayout(new BorderLayout());
         title_panel.setBounds(0, 0, 800, 100);
-
         button_panel.setLayout(new GridLayout(3, 3));
         button_panel.setBackground(Settings.button_background_color);
     }
 
     void addTextField() {
         textfield.setOpaque(true);
-        textfield.setBackground(Settings.text_field_background_color);
-        textfield.setForeground(Settings.text_field_foreground_color);
+        textfield.setText("Tic-Tac-Toe");
         textfield.setFont(Settings.textFieldFont);
         textfield.setHorizontalAlignment(JLabel.CENTER);
-        textfield.setText("Tic-Tac-Toe");
+        textfield.setBackground(Settings.text_field_background_color);
+        textfield.setForeground(Settings.text_field_foreground_color);
     }
 
     void initGameBoard() {
