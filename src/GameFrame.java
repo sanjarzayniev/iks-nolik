@@ -5,11 +5,13 @@ import java.awt.event.*;
 
 class GameFrame extends JFrame {
     boolean firstPlayerTurn;
+    boolean winnerExists;
 
     Random random = new Random();
     JPanel title_panel = new JPanel(), button_panel = new JPanel();
 
     JLabel textfield = new JLabel();
+    JLabel upperTextField = new JLabel();
 
     JButton[] buttons = new JButton[Settings.TOTAL_BUTTONS];
 
@@ -32,7 +34,7 @@ class GameFrame extends JFrame {
     }
 
     void initPanels() {
-        title_panel.setLayout(new BorderLayout());
+        title_panel.setLayout(new GridLayout(2,2));
         title_panel.setBounds(0, 0, 800, 100);
         button_panel.setLayout(new GridLayout(3, 3));
         button_panel.setBackground(Settings.button_background_color);
@@ -40,11 +42,18 @@ class GameFrame extends JFrame {
 
     void addTextField() {
         textfield.setOpaque(true);
-        textfield.setText("Tic-Tac-Toe");
+        // textfield.setText("Tic-Tac-Toe");
         textfield.setFont(Settings.textFieldFont);
         textfield.setHorizontalAlignment(JLabel.CENTER);
         textfield.setBackground(Settings.text_field_background_color);
         textfield.setForeground(Settings.text_field_foreground_color);
+        
+        upperTextField.setOpaque(true);
+        upperTextField.setText("TicTacToe");
+        upperTextField.setFont(Settings.upperTextFieldFont);
+        // upperTextField.setHorizontalAlignment(JLabel.WEST);
+        upperTextField.setBackground(Settings.upper_text_field_background_color);
+        upperTextField.setForeground(Settings.upper_text_field_foreground_color);
     }
 
     void initGameBoard() {
@@ -55,7 +64,7 @@ class GameFrame extends JFrame {
             buttons[i].setFont(Settings.buttonFont);
             buttons[i].addActionListener(new ButtonActionListener());
         }
-
+        title_panel.add(upperTextField);
         title_panel.add(textfield);
 
         add(title_panel, BorderLayout.NORTH);
@@ -65,11 +74,6 @@ class GameFrame extends JFrame {
     }
 
     public void startGame() {
-        try {
-            Thread.sleep(Settings.SLEEP_TIME);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if (random.nextInt(2) == 0) {
             firstPlayerTurn = true;
             textfield.setText("X turn");
@@ -85,41 +89,49 @@ class GameFrame extends JFrame {
                 (buttons[1].getText() == "X") &&
                 (buttons[2].getText() == "X")) {
             xWins(0, 1, 2);
+            winnerExists = true;
         }
         if ((buttons[3].getText() == "X") &&
                 (buttons[4].getText() == "X") &&
                 (buttons[5].getText() == "X")) {
             xWins(3, 4, 5);
+            winnerExists = true;
         }
         if ((buttons[6].getText() == "X") &&
                 (buttons[7].getText() == "X") &&
                 (buttons[8].getText() == "X")) {
             xWins(6, 7, 8);
+            winnerExists = true;
         }
         if ((buttons[0].getText() == "X") &&
                 (buttons[3].getText() == "X") &&
                 (buttons[6].getText() == "X")) {
             xWins(0, 3, 6);
+            winnerExists = true;
         }
         if ((buttons[1].getText() == "X") &&
                 (buttons[4].getText() == "X") &&
                 (buttons[7].getText() == "X")) {
             xWins(1, 4, 7);
+            winnerExists = true;
         }
         if ((buttons[2].getText() == "X") &&
                 (buttons[5].getText() == "X") &&
                 (buttons[8].getText() == "X")) {
             xWins(2, 5, 8);
+            winnerExists = true;
         }
         if ((buttons[0].getText() == "X") &&
                 (buttons[4].getText() == "X") &&
                 (buttons[8].getText() == "X")) {
             xWins(0, 4, 8);
+            winnerExists = true;
         }
         if ((buttons[2].getText() == "X") &&
                 (buttons[4].getText() == "X") &&
                 (buttons[6].getText() == "X")) {
             xWins(2, 4, 6);
+            winnerExists = true;
         }
 
         // check O win conditions
@@ -127,41 +139,49 @@ class GameFrame extends JFrame {
                 (buttons[1].getText() == "O") &&
                 (buttons[2].getText() == "O")) {
             oWins(0, 1, 2);
+            winnerExists = true;
         }
         if ((buttons[3].getText() == "O") &&
                 (buttons[4].getText() == "O") &&
                 (buttons[5].getText() == "O")) {
             oWins(3, 4, 5);
+            winnerExists = true;
         }
         if ((buttons[6].getText() == "O") &&
                 (buttons[7].getText() == "O") &&
                 (buttons[8].getText() == "O")) {
             oWins(6, 7, 8);
+            winnerExists = true;
         }
         if ((buttons[0].getText() == "O") &&
                 (buttons[3].getText() == "O") &&
                 (buttons[6].getText() == "O")) {
             oWins(0, 3, 6);
+            winnerExists = true;
         }
         if ((buttons[1].getText() == "O") &&
                 (buttons[4].getText() == "O") &&
                 (buttons[7].getText() == "O")) {
             oWins(1, 4, 7);
+            winnerExists = true;
         }
         if ((buttons[2].getText() == "O") &&
                 (buttons[5].getText() == "O") &&
                 (buttons[8].getText() == "O")) {
             oWins(2, 5, 8);
+            winnerExists = true;
         }
         if ((buttons[0].getText() == "O") &&
                 (buttons[4].getText() == "O") &&
                 (buttons[8].getText() == "O")) {
             oWins(0, 4, 8);
+            winnerExists = true;
         }
         if ((buttons[2].getText() == "O") &&
                 (buttons[4].getText() == "O") &&
                 (buttons[6].getText() == "O")) {
             oWins(2, 4, 6);
+            winnerExists = true;
         }
     }
 
@@ -213,11 +233,11 @@ class GameFrame extends JFrame {
                     }
                 }
             }
-            if (isBoardFull()) {
+            if (isBoardFull() && !winnerExists) {
                 for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
                     buttons[i].setEnabled(false);
                 }
-                textfield.setText("draw");
+                textfield.setText("Draw");
             }
         }
 
