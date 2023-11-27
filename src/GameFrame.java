@@ -34,7 +34,7 @@ class GameFrame extends JFrame {
     }
 
     void initPanels() {
-        title_panel.setLayout(new GridLayout(2,2));
+        title_panel.setLayout(new GridLayout(2, 2));
         title_panel.setBounds(0, 0, 800, 100);
         button_panel.setLayout(new GridLayout(3, 3));
         button_panel.setBackground(Settings.button_background_color);
@@ -47,7 +47,7 @@ class GameFrame extends JFrame {
         textfield.setHorizontalAlignment(JLabel.CENTER);
         textfield.setBackground(Settings.text_field_background_color);
         textfield.setForeground(Settings.text_field_foreground_color);
-        
+
         upperTextField.setOpaque(true);
         upperTextField.setText("TicTacToe");
         upperTextField.setFont(Settings.upperTextFieldFont);
