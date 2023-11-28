@@ -26,6 +26,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 
     private GameFrame gameFrame;
 
+    public String enteredUsername = new String();
+
     public LoginFrame(GameFrame gameFrame) {
         addJpanel();
         addJFrame();
@@ -41,7 +43,6 @@ public class LoginFrame extends JFrame implements ActionListener {
         gbc.gridy = 0;
         gbc.insets = new Insets(10, 10, 10, 10);
         loginPanel.setBackground(Color.BLACK);
-        // getContentPane().setBackground(new Color(200, 200, 200));
     }
 
     private void addJFrame() {
@@ -89,13 +90,13 @@ public class LoginFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String enteredUsername = username.getText();
+        enteredUsername = username.getText();
 
         if (enteredUsername.isBlank()) {
-            JOptionPane.showMessageDialog(null, "Please, input your username!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please, input your username!", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else {
             ImageIcon icon = new ImageIcon("assets/images/green_tick_icon.png");
-            JOptionPane.showMessageDialog(null, "Login Successful", "Success", JOptionPane.INFORMATION_MESSAGE, icon);
+            JOptionPane.showMessageDialog(null, "Login Successful", "SUCCESS", JOptionPane.INFORMATION_MESSAGE, icon);
             this.dispose();
             this.gameFrame.setVisible(true);
         }

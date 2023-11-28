@@ -45,18 +45,19 @@ public class GameFrame extends JFrame {
 
     void addTextField() {
         textfield.setOpaque(true);
-        // textfield.setText("Tic-Tac-Toe");
         textfield.setFont(Settings.textFieldFont);
         textfield.setHorizontalAlignment(JLabel.CENTER);
         textfield.setBackground(Settings.text_field_background_color);
         textfield.setForeground(Settings.text_field_foreground_color);
 
         upperTextField.setOpaque(true);
-        upperTextField.setText("TicTacToe");
+        upperTextField.setText("TicTacToe ");
         upperTextField.setFont(Settings.upperTextFieldFont);
         // upperTextField.setHorizontalAlignment(JLabel.WEST);
         upperTextField.setBackground(Settings.upper_text_field_background_color);
         upperTextField.setForeground(Settings.upper_text_field_foreground_color);
+
+        
     }
 
     void initGameBoard() {

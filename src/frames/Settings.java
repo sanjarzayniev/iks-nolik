@@ -10,7 +10,7 @@ public class Settings {
             BUTTON_FONT_SIZE = 100;
     public static Color panel_background = new Color(50, 50, 50),
             text_field_background_color = new Color(25, 25, 25),
-            upper_text_field_background_color = new Color(29, 31, 29),
+            upper_text_field_background_color = new Color(25, 25, 25),
             button_background_color = new Color(205, 205, 205),
             text_field_foreground_color = new Color(46, 230, 46),
             upper_text_field_foreground_color = new Color(46, 230, 46),
