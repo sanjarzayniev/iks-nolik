@@ -17,13 +17,15 @@ public class LoginFrame extends JFrame implements ActionListener {
     private JButton playButton = new JButton("Play");
 
     private JPanel loginPanel = new JPanel();
+    private GameFrame gameFrame;
 
-    public LoginFrame() {
+    public LoginFrame(GameFrame gameFrame) {
         addJpanel();
         addJFrame();
         addLabel();
         addTextField();
         addButton();
+        this.gameFrame = gameFrame;
     }
 
     private void addJpanel() {
@@ -63,5 +65,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         String enteredUsername = username.getText();
 
         JOptionPane.showMessageDialog(null, "Login Successful\nUsername: " + enteredUsername);
+        this.dispose();
+        this.gameFrame.setVisible(true);
     }
 }
