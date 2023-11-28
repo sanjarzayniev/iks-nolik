@@ -6,7 +6,10 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,7 +41,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(10, 10, 10, 10);
-        // loginPanel.setBackground(Color.BLACK);
+        loginPanel.setBackground(Color.BLACK);
         // getContentPane().setBackground(new Color(200, 200, 200));
     }
 
@@ -55,10 +58,12 @@ public class LoginFrame extends JFrame implements ActionListener {
     private void addLabel() {
         label = new JLabel("Input your username:");
         label.setBounds(100, 10, 150, 15);
-        gbc.gridx = 0; 
+        gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
         loginPanel.add(label, gbc);
+        label.setBackground(Color.WHITE);
+        label.setForeground(Color.WHITE);
     }
 
     private void addTextField() {
@@ -68,6 +73,25 @@ public class LoginFrame extends JFrame implements ActionListener {
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         username.setPreferredSize(new Dimension(200, 28));
+        username.setForeground(Color.BLACK);
+
+        // username.addFocusListener(new FocusListener() {
+        // @Override
+        // public void focusGained(FocusEvent e) {
+        // if (username.getText().equals("Input your username")) {
+        // username.setText("");
+        // username.setForeground(Color.BLACK);
+        // }
+        // }
+
+        // @Override
+        // public void focusLost(FocusEvent e) {
+        // if (username.getText().isEmpty()) {
+        // username.setForeground(Color.GRAY);
+        // username.setText("Input your username");
+        // }
+        // }
+        // });
         loginPanel.add(username, gbc);
     }
 
@@ -77,7 +101,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         gbc.anchor = GridBagConstraints.CENTER;
         playButton.setBounds(100, 110, 90, 25);
         playButton.setForeground(Color.GREEN);
-        playButton.setBackground(Color.BLACK);
+        playButton.setBackground(Color.WHITE);
         playButton.addActionListener(this);
         loginPanel.add(playButton, gbc);
     }
@@ -86,13 +110,15 @@ public class LoginFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String enteredUsername = username.getText();
 
-        if (enteredUsername == null) {
-            JOptionPane.showMessageDialog(null, e, "Please, input your username!", ERROR);
+        if (enteredUsername.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Please, input your username!", "Error", JOptionPane.ERROR_MESSAGE);
+            // username.requestFocus();
         } else {
-            JOptionPane.showMessageDialog(null, "Login Successful");
+            ImageIcon icon = new ImageIcon("green_tick_icon.png");
+            JOptionPane.showMessageDialog(null, "Login Successful", "Success", JOptionPane.INFORMATION_MESSAGE, icon);
+            this.dispose();
+            this.gameFrame.setVisible(true);
         }
-
-        this.dispose();
-        this.gameFrame.setVisible(true);
+        
     }
 }
