@@ -1,9 +1,12 @@
+package frames;
+
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+
 import java.awt.event.*;
 
-class GameFrame extends JFrame {
+public class GameFrame extends JFrame {
     boolean firstPlayerTurn;
     boolean winnerExists;
 
@@ -15,7 +18,7 @@ class GameFrame extends JFrame {
 
     JButton[] buttons = new JButton[Settings.TOTAL_BUTTONS];
 
-    GameFrame() {
+    public GameFrame() {
         initFrame();
         addTextField();
         initPanels();

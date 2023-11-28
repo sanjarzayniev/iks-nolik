@@ -1,21 +1,20 @@
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+package frames;
 import java.awt.Point;
+import java.awt.Color;
+import java.awt.Insets;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JTextField;
+import javax.swing.JOptionPane;
 
 public class LoginFrame extends JFrame implements ActionListener {
     private JLabel label;
@@ -46,7 +45,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     }
 
     private void addJFrame() {
-        setTitle("Login Page");
+        setTitle("Login");
         setLocation(new Point(400, 300));
         add(loginPanel);
         setSize(600, 600);
@@ -74,24 +73,6 @@ public class LoginFrame extends JFrame implements ActionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         username.setPreferredSize(new Dimension(200, 28));
         username.setForeground(Color.BLACK);
-
-        // username.addFocusListener(new FocusListener() {
-        // @Override
-        // public void focusGained(FocusEvent e) {
-        // if (username.getText().equals("Input your username")) {
-        // username.setText("");
-        // username.setForeground(Color.BLACK);
-        // }
-        // }
-
-        // @Override
-        // public void focusLost(FocusEvent e) {
-        // if (username.getText().isEmpty()) {
-        // username.setForeground(Color.GRAY);
-        // username.setText("Input your username");
-        // }
-        // }
-        // });
         loginPanel.add(username, gbc);
     }
 
@@ -112,13 +93,12 @@ public class LoginFrame extends JFrame implements ActionListener {
 
         if (enteredUsername.isBlank()) {
             JOptionPane.showMessageDialog(null, "Please, input your username!", "Error", JOptionPane.ERROR_MESSAGE);
-            // username.requestFocus();
         } else {
-            ImageIcon icon = new ImageIcon("green_tick_icon.png");
+            ImageIcon icon = new ImageIcon("assets/images/green_tick_icon.png");
             JOptionPane.showMessageDialog(null, "Login Successful", "Success", JOptionPane.INFORMATION_MESSAGE, icon);
             this.dispose();
             this.gameFrame.setVisible(true);
         }
-        
+
     }
 }
