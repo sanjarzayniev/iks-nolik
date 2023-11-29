@@ -8,13 +8,14 @@ import java.awt.event.*;
 
 public class GameFrame extends JFrame {
     boolean firstPlayerTurn;
-    boolean winnerExists;
+    boolean winnerExists = false;
 
     Random random = new Random();
     JPanel title_panel = new JPanel(), button_panel = new JPanel();
 
     JLabel textfield = new JLabel();
     JLabel upperTextField = new JLabel();
+    JLabel usernameLabel = new JLabel(LoginFrame.enteredUsername);
 
     JButton[] buttons = new JButton[Settings.TOTAL_BUTTONS];
 
@@ -37,7 +38,7 @@ public class GameFrame extends JFrame {
     }
 
     void initPanels() {
-        title_panel.setLayout(new GridLayout(2, 2));
+        title_panel.setLayout(new GridLayout(1, 3));
         title_panel.setBounds(0, 0, 800, 100);
         button_panel.setLayout(new GridLayout(3, 3));
         button_panel.setBackground(Settings.button_background_color);
@@ -51,13 +52,17 @@ public class GameFrame extends JFrame {
         textfield.setForeground(Settings.text_field_foreground_color);
 
         upperTextField.setOpaque(true);
-        upperTextField.setText("TicTacToe ");
+        upperTextField.setText("TicTacToe");
         upperTextField.setFont(Settings.upperTextFieldFont);
-        // upperTextField.setHorizontalAlignment(JLabel.WEST);
+        upperTextField.setHorizontalAlignment(JLabel.CENTER);
         upperTextField.setBackground(Settings.upper_text_field_background_color);
         upperTextField.setForeground(Settings.upper_text_field_foreground_color);
 
-        
+        // usernameLabel.setOpaque(true);
+        usernameLabel.setFont(Settings.upperTextFieldFont);
+        usernameLabel.setBackground(Color.BLACK);
+        usernameLabel.setForeground(Settings.upper_text_field_foreground_color);
+        usernameLabel.setHorizontalAlignment(JLabel.CENTER);
     }
 
     void initGameBoard() {
@@ -68,8 +73,11 @@ public class GameFrame extends JFrame {
             buttons[i].setFont(Settings.buttonFont);
             buttons[i].addActionListener(new ButtonActionListener());
         }
+
+        // title_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         title_panel.add(upperTextField);
         title_panel.add(textfield);
+        title_panel.add(usernameLabel);
 
         add(title_panel, BorderLayout.NORTH);
         add(button_panel);

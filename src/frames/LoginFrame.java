@@ -1,4 +1,5 @@
 package frames;
+
 import java.awt.Point;
 import java.awt.Color;
 import java.awt.Insets;
@@ -19,14 +20,14 @@ import javax.swing.JOptionPane;
 public class LoginFrame extends JFrame implements ActionListener {
     private JLabel label;
     private JTextField username;
-    private JButton playButton = new JButton("Play");
+    private JButton playButton = new JButton("PLAY");
 
     private JPanel loginPanel = new JPanel(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
 
     private GameFrame gameFrame;
 
-    public String enteredUsername = new String();
+    public static String enteredUsername;
 
     public LoginFrame(GameFrame gameFrame) {
         addJpanel();
@@ -56,7 +57,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     }
 
     private void addLabel() {
-        label = new JLabel("Input your username:");
+        label = new JLabel("Input your username: ");
         label.setBounds(100, 10, 150, 15);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -102,4 +103,5 @@ public class LoginFrame extends JFrame implements ActionListener {
         }
 
     }
+
 }
