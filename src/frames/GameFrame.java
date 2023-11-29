@@ -12,10 +12,7 @@ public class GameFrame extends JFrame {
 
     Random random = new Random();
     JPanel title_panel = new JPanel(), button_panel = new JPanel();
-
-    JLabel textfield = new JLabel();
-    JLabel upperTextField = new JLabel();
-    JLabel usernameLabel = new JLabel(LoginFrame.enteredUsername);
+    JLabel textfield = new JLabel(), upperTextField = new JLabel(), usernameLabel = new JLabel();
 
     JButton[] buttons = new JButton[Settings.TOTAL_BUTTONS];
 
@@ -58,25 +55,24 @@ public class GameFrame extends JFrame {
         upperTextField.setBackground(Settings.upper_text_field_background_color);
         upperTextField.setForeground(Settings.upper_text_field_foreground_color);
 
-        // usernameLabel.setOpaque(true);
-        usernameLabel.setFont(Settings.upperTextFieldFont);
-        usernameLabel.setBackground(Color.BLACK);
+        usernameLabel.setOpaque(true);
+        usernameLabel.setFont(Settings.usernameTextFieldFont);
+        usernameLabel.setBackground(Settings.upper_text_field_background_color);
         usernameLabel.setForeground(Settings.upper_text_field_foreground_color);
         usernameLabel.setHorizontalAlignment(JLabel.CENTER);
     }
 
     void initGameBoard() {
-        for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
-            buttons[i] = new JButton();
-            button_panel.add(buttons[i]);
-            buttons[i].setFocusable(false);
-            buttons[i].setFont(Settings.buttonFont);
-            buttons[i].addActionListener(new ButtonActionListener());
+        for (int index = 0; index < Settings.TOTAL_BUTTONS; index++) {
+            buttons[index] = new JButton();
+            button_panel.add(buttons[index]);
+            buttons[index].setFocusable(false);
+            buttons[index].setFont(Settings.buttonFont);
+            buttons[index].addActionListener(new ButtonActionListener());
         }
 
-        // title_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        title_panel.add(upperTextField);
         title_panel.add(textfield);
+        title_panel.add(upperTextField);
         title_panel.add(usernameLabel);
 
         add(title_panel, BorderLayout.NORTH);
@@ -96,105 +92,34 @@ public class GameFrame extends JFrame {
     }
 
     public void check() {
-        // Check X win conditions
-        if ((buttons[0].getText() == "X") &&
-                (buttons[1].getText() == "X") &&
-                (buttons[2].getText() == "X")) {
-            xWins(0, 1, 2);
-            winnerExists = true;
-        }
-        if ((buttons[3].getText() == "X") &&
-                (buttons[4].getText() == "X") &&
-                (buttons[5].getText() == "X")) {
-            xWins(3, 4, 5);
-            winnerExists = true;
-        }
-        if ((buttons[6].getText() == "X") &&
-                (buttons[7].getText() == "X") &&
-                (buttons[8].getText() == "X")) {
-            xWins(6, 7, 8);
-            winnerExists = true;
-        }
-        if ((buttons[0].getText() == "X") &&
-                (buttons[3].getText() == "X") &&
-                (buttons[6].getText() == "X")) {
-            xWins(0, 3, 6);
-            winnerExists = true;
-        }
-        if ((buttons[1].getText() == "X") &&
-                (buttons[4].getText() == "X") &&
-                (buttons[7].getText() == "X")) {
-            xWins(1, 4, 7);
-            winnerExists = true;
-        }
-        if ((buttons[2].getText() == "X") &&
-                (buttons[5].getText() == "X") &&
-                (buttons[8].getText() == "X")) {
-            xWins(2, 5, 8);
-            winnerExists = true;
-        }
-        if ((buttons[0].getText() == "X") &&
-                (buttons[4].getText() == "X") &&
-                (buttons[8].getText() == "X")) {
-            xWins(0, 4, 8);
-            winnerExists = true;
-        }
-        if ((buttons[2].getText() == "X") &&
-                (buttons[4].getText() == "X") &&
-                (buttons[6].getText() == "X")) {
-            xWins(2, 4, 6);
-            winnerExists = true;
+        Integer[][] winPositions = {
+                { 0, 1, 2 },
+                { 3, 4, 5 },
+                { 6, 7, 8 },
+                { 0, 3, 6 },
+                { 1, 4, 7 },
+                { 2, 5, 8 },
+                { 0, 4, 8 },
+                { 2, 4, 6 }
+        };
+
+        for (Integer[] condition : winPositions) {
+            if (checkText("X", condition[0], condition[1], condition[2])) {
+                xWins(condition[0], condition[1], condition[2]);
+                winnerExists = true;
+            }
+            if (checkText("O", condition[0], condition[1], condition[2])) {
+                oWins(condition[0], condition[1], condition[2]);
+                winnerExists = true;
+            }
         }
 
-        // check O win conditions
-        if ((buttons[0].getText() == "O") &&
-                (buttons[1].getText() == "O") &&
-                (buttons[2].getText() == "O")) {
-            oWins(0, 1, 2);
-            winnerExists = true;
-        }
-        if ((buttons[3].getText() == "O") &&
-                (buttons[4].getText() == "O") &&
-                (buttons[5].getText() == "O")) {
-            oWins(3, 4, 5);
-            winnerExists = true;
-        }
-        if ((buttons[6].getText() == "O") &&
-                (buttons[7].getText() == "O") &&
-                (buttons[8].getText() == "O")) {
-            oWins(6, 7, 8);
-            winnerExists = true;
-        }
-        if ((buttons[0].getText() == "O") &&
-                (buttons[3].getText() == "O") &&
-                (buttons[6].getText() == "O")) {
-            oWins(0, 3, 6);
-            winnerExists = true;
-        }
-        if ((buttons[1].getText() == "O") &&
-                (buttons[4].getText() == "O") &&
-                (buttons[7].getText() == "O")) {
-            oWins(1, 4, 7);
-            winnerExists = true;
-        }
-        if ((buttons[2].getText() == "O") &&
-                (buttons[5].getText() == "O") &&
-                (buttons[8].getText() == "O")) {
-            oWins(2, 5, 8);
-            winnerExists = true;
-        }
-        if ((buttons[0].getText() == "O") &&
-                (buttons[4].getText() == "O") &&
-                (buttons[8].getText() == "O")) {
-            oWins(0, 4, 8);
-            winnerExists = true;
-        }
-        if ((buttons[2].getText() == "O") &&
-                (buttons[4].getText() == "O") &&
-                (buttons[6].getText() == "O")) {
-            oWins(2, 4, 6);
-            winnerExists = true;
-        }
+    }
+
+    private boolean checkText(String text, int firstIndex, int secondIndex, int thirdIndex) {
+        return (buttons[firstIndex].getText() == text) &&
+                (buttons[secondIndex].getText() == text) &&
+                (buttons[thirdIndex].getText() == text);
     }
 
     public void xWins(int a, int b, int c) {
@@ -202,9 +127,7 @@ public class GameFrame extends JFrame {
         buttons[b].setBackground(Settings.button_green_color);
         buttons[c].setBackground(Settings.button_green_color);
 
-        for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
-            buttons[i].setEnabled(false);
-        }
+        this.makeButtonsDisabled();
         textfield.setText("X wins");
     }
 
@@ -213,53 +136,71 @@ public class GameFrame extends JFrame {
         buttons[b].setBackground(Settings.button_green_color);
         buttons[c].setBackground(Settings.button_green_color);
 
-        for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
-            buttons[i].setEnabled(false);
-        }
+        this.makeButtonsDisabled();
         textfield.setText("O wins");
+    }
+
+    private void makeButtonsDisabled() {
+        for (JButton button : buttons) {
+            button.setEnabled(false);
+        }
+    }
+
+    public void setUsername(String username) {
+        this.usernameLabel.setText(username);
     }
 
     class ButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
-                if (event.getSource() == buttons[i]) {
+            for (JButton button : buttons) {
+                if (event.getSource() == button) {
                     if (firstPlayerTurn) {
-                        if (buttons[i].getText() == "") {
-                            buttons[i].setForeground(Settings.button_red_color);
-                            buttons[i].setText("X");
-                            textfield.setText("O turn");
-                            check();
+                        if (button.getText().equals("")) {
+                            updateButton(
+                                    button,
+                                    Settings.button_red_color,
+                                    "X",
+                                    "O turn");
                             firstPlayerTurn = false;
                         }
                     }
 
                     else {
-                        if (buttons[i].getText() == "") {
-                            buttons[i].setForeground(Settings.button_blue_color);
-                            buttons[i].setText("O");
-                            textfield.setText("X turn");
-                            check();
+                        if (button.getText().equals("")) {
+                            updateButton(
+                                    button,
+                                    Settings.button_blue_color,
+                                    "O",
+                                    "X turn");
                             firstPlayerTurn = true;
                         }
                     }
                 }
             }
+            // Consider draw case
             if (isBoardFull() && !winnerExists) {
-                for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
-                    buttons[i].setEnabled(false);
-                }
                 textfield.setText("Draw");
+                makeButtonsDisabled();
             }
         }
 
+        private void updateButton(JButton button, Color color, String buttonText, String textFieldText) {
+            button.setForeground(color);
+            button.setText(buttonText);
+            textfield.setText(textFieldText);
+            check();
+
+        }
+
         private boolean isBoardFull() {
-            for (int i = 0; i < Settings.TOTAL_BUTTONS; i++) {
-                if (buttons[i].getText().equals("")) {
+            for (JButton button : buttons) {
+                if (button.getText().equals("")) {
                     return false;
                 }
             }
             return true;
         }
     }
+
 }

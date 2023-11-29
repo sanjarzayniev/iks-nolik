@@ -1,26 +1,13 @@
 package frames;
 
-import java.awt.Point;
-import java.awt.Color;
-import java.awt.Insets;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.GridBagConstraints;
-import java.awt.event.ActionListener;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
-import javax.swing.JOptionPane;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
 
 public class LoginFrame extends JFrame implements ActionListener {
     private JLabel label;
     private JTextField username;
-    private JButton playButton = new JButton("PLAY");
+    private JButton playButton = new JButton(Settings.PLAY_BUTTON_TEXT);
 
     private JPanel loginPanel = new JPanel(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
@@ -57,36 +44,36 @@ public class LoginFrame extends JFrame implements ActionListener {
     }
 
     private void addLabel() {
-        label = new JLabel("Input your username: ");
+        label = new JLabel(Settings.USERNAME_LABEL);
         label.setBounds(100, 10, 150, 15);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.CENTER;
         loginPanel.add(label, gbc);
         label.setBackground(Color.WHITE);
         label.setForeground(Color.WHITE);
+        gbc.anchor = GridBagConstraints.CENTER;
     }
 
     private void addTextField() {
         username = new JTextField();
         gbc.gridx = 0;
         gbc.gridy = 1;
+        loginPanel.add(username, gbc);
         gbc.anchor = GridBagConstraints.CENTER;
+        username.setForeground(Color.BLACK);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         username.setPreferredSize(new Dimension(200, 28));
-        username.setForeground(Color.BLACK);
-        loginPanel.add(username, gbc);
     }
 
     private void addButton() {
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        playButton.setBounds(100, 110, 90, 25);
+        loginPanel.add(playButton, gbc);
+        playButton.addActionListener(this);
         playButton.setForeground(Color.GREEN);
         playButton.setBackground(Color.WHITE);
-        playButton.addActionListener(this);
-        loginPanel.add(playButton, gbc);
+        playButton.setBounds(100, 110, 90, 25);
+        gbc.anchor = GridBagConstraints.CENTER;
     }
 
     @Override
@@ -94,12 +81,18 @@ public class LoginFrame extends JFrame implements ActionListener {
         enteredUsername = username.getText();
 
         if (enteredUsername.isBlank()) {
-            JOptionPane.showMessageDialog(null, "Please, input your username!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, Settings.USERNAME_WARNING_TEXT, "ERROR", JOptionPane.ERROR_MESSAGE);
         } else {
-            ImageIcon icon = new ImageIcon("assets/images/green_tick_icon.png");
-            JOptionPane.showMessageDialog(null, "Login Successful", "SUCCESS", JOptionPane.INFORMATION_MESSAGE, icon);
+            ImageIcon icon = new ImageIcon(Settings.TICK_ICON_PATH);
+            JOptionPane.showMessageDialog(
+                    null,
+                    Settings.LOGIN_SUCCESS_TEXT,
+                    "SUCCESS",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    icon);
             this.dispose();
             this.gameFrame.setVisible(true);
+            this.gameFrame.setUsername(enteredUsername);
         }
 
     }
