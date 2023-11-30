@@ -69,6 +69,7 @@ public class GameFrame extends JFrame {
             buttons[index].setFocusable(false);
             buttons[index].setFont(Settings.buttonFont);
             buttons[index].addActionListener(new ButtonActionListener());
+            buttons[index].setBackground(Color.WHITE);
         }
 
         title_panel.add(textfield);
@@ -117,7 +118,7 @@ public class GameFrame extends JFrame {
     }
 
     private boolean checkText(String text, int firstIndex, int secondIndex, int thirdIndex) {
-        return (buttons[firstIndex].getText() == text) &&
+        return  (buttons[firstIndex].getText() == text)  &&
                 (buttons[secondIndex].getText() == text) &&
                 (buttons[thirdIndex].getText() == text);
     }
