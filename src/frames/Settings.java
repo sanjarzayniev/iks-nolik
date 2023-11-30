@@ -1,7 +1,6 @@
 package frames;
 
-import java.awt.Font;
-import java.awt.Color;
+import java.awt.*;
 
 public class Settings {
         public static final int TOTAL_BUTTONS = 9,
@@ -10,6 +9,7 @@ public class Settings {
                         TEXT_FIELD_FONT_SIZE = 30,
                         USERNAME_FIELD_FONT_SIZE = 25,
                         BUTTON_FONT_SIZE = 100;
+
         public static Color panel_background = new Color(50, 50, 50),
                         text_field_background_color = new Color(25, 25, 25),
                         upper_text_field_background_color = new Color(25, 25, 25),
@@ -34,10 +34,12 @@ public class Settings {
         public static Font upperTextFieldFont = new Font(TEXT_FIELD_FONT_NAME,
                         Font.BOLD,
                         TEXT_FIELD_FONT_SIZE);
+                        
         public static Font usernameTextFieldFont = new Font(
                         TEXT_FIELD_FONT_NAME,
                         Font.BOLD,
                         USERNAME_FIELD_FONT_SIZE);
+
         public static String PLAY_BUTTON_TEXT = "PLAY",
                         USERNAME_LABEL = "Input your username: ",
                         USERNAME_WARNING_TEXT = "Username field cannot be blank!",

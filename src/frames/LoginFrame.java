@@ -17,6 +17,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     public static String enteredUsername;
 
     public LoginFrame(GameFrame gameFrame) {
+        setVisible(true);
         addJpanel();
         addJFrame();
         addLabel();
@@ -93,6 +94,7 @@ public class LoginFrame extends JFrame implements ActionListener {
             this.dispose();
             this.gameFrame.setVisible(true);
             this.gameFrame.setUsername(enteredUsername);
+            this.gameFrame.initSockets();
         }
 
     }
