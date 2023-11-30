@@ -4,7 +4,13 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
+import helpers.Logger;
+import server.ServerSettings;
+
 import java.awt.event.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 public class GameFrame extends JFrame {
     boolean firstPlayerTurn;
@@ -16,27 +22,28 @@ public class GameFrame extends JFrame {
 
     JButton[] buttons = new JButton[Settings.TOTAL_BUTTONS];
 
+    // Socket handlers
+    Scanner input;
+    PrintWriter output;
+
     public GameFrame() {
         initFrame();
         addTextField();
         initPanels();
         initGameBoard();
-
-        startGame();
     }
 
     void initFrame() {
-        setVisible(true);
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Settings.FRAME_SIZE, Settings.FRAME_SIZE);
-        setLocationRelativeTo(null);
         getContentPane().setBackground(Settings.panel_background);
     }
 
     void initPanels() {
-        title_panel.setLayout(new GridLayout(1, 3));
         title_panel.setBounds(0, 0, 800, 100);
+        title_panel.setLayout(new GridLayout(1, 3));
         button_panel.setLayout(new GridLayout(3, 3));
         button_panel.setBackground(Settings.button_background_color);
     }
@@ -67,9 +74,9 @@ public class GameFrame extends JFrame {
             buttons[index] = new JButton();
             button_panel.add(buttons[index]);
             buttons[index].setFocusable(false);
+            buttons[index].setBackground(Color.WHITE);
             buttons[index].setFont(Settings.buttonFont);
             buttons[index].addActionListener(new ButtonActionListener());
-            buttons[index].setBackground(Color.WHITE);
         }
 
         title_panel.add(textfield);
@@ -78,49 +85,6 @@ public class GameFrame extends JFrame {
 
         add(title_panel, BorderLayout.NORTH);
         add(button_panel);
-
-        startGame();
-    }
-
-    public void startGame() {
-        if (random.nextInt(2) == 0) {
-            firstPlayerTurn = true;
-            textfield.setText("X turn");
-        } else {
-            firstPlayerTurn = false;
-            textfield.setText("O turn");
-        }
-    }
-
-    public void check() {
-        Integer[][] winPositions = {
-                { 0, 1, 2 },
-                { 3, 4, 5 },
-                { 6, 7, 8 },
-                { 0, 3, 6 },
-                { 1, 4, 7 },
-                { 2, 5, 8 },
-                { 0, 4, 8 },
-                { 2, 4, 6 }
-        };
-
-        for (Integer[] condition : winPositions) {
-            if (checkText("X", condition[0], condition[1], condition[2])) {
-                xWins(condition[0], condition[1], condition[2]);
-                winnerExists = true;
-            }
-            if (checkText("O", condition[0], condition[1], condition[2])) {
-                oWins(condition[0], condition[1], condition[2]);
-                winnerExists = true;
-            }
-        }
-
-    }
-
-    private boolean checkText(String text, int firstIndex, int secondIndex, int thirdIndex) {
-        return  (buttons[firstIndex].getText() == text)  &&
-                (buttons[secondIndex].getText() == text) &&
-                (buttons[thirdIndex].getText() == text);
     }
 
     public void xWins(int a, int b, int c) {
@@ -147,60 +111,105 @@ public class GameFrame extends JFrame {
         }
     }
 
+    private void releaseButtons() {
+        for (JButton button : buttons) {
+            button.setEnabled(true);
+        }
+    }
+
     public void setUsername(String username) {
         this.usernameLabel.setText(username);
+    }
+
+    public void initSockets() {
+        Socket socket;
+        try {
+            socket = new Socket(ServerSettings.SERVER_HOST, ServerSettings.SERVER_PORT);
+            input = new Scanner(socket.getInputStream());
+            output = new PrintWriter(socket.getOutputStream(), true);
+            new Thread(
+                    () -> {
+                        String myMark = "", opponentMark = "";
+                        while (input.hasNextLine()) {
+                            String message = input.nextLine();
+                            Logger.info("Received: " + message);
+
+                            if (message.equals("wait")) {
+                                upperTextField.setText("Wait...");
+                                makeButtonsDisabled();
+                            }
+
+                            if (message.equals("your_move")) {
+                                upperTextField.setText("Your Move");
+                                releaseButtons();
+                            }
+
+                            if (message.startsWith("your_mark")) {
+                                myMark = message.split(":")[1];
+                                textfield.setText(myMark);
+                            }
+
+                            if (message.startsWith("opponent_moved")) {
+                                int buttonIndex = Integer.parseInt(message.split(":")[1]);
+                                opponentMark = myMark.equals("X") ? "O" : "X";
+                                upperTextField.setText("Your move");
+                                updateButton(
+                                        buttons[buttonIndex],
+                                        opponentMark);
+                                releaseButtons();
+                            }
+
+                            if (message.startsWith("valid_move")) {
+                                int buttonIndex = Integer.parseInt(message.split(":")[1]);
+                                updateButton(buttons[buttonIndex], myMark);
+                                upperTextField.setText("Wait...");
+                                makeButtonsDisabled();
+                            }
+
+                            if (message.equals("draw")) {
+                                upperTextField.setText("Draw!");
+                                textfield.setText("");
+                                makeButtonsDisabled();
+                                break;
+                            }
+
+                            if (message.equals("victory")) {
+                                upperTextField.setText("You Won!");
+                                textfield.setText("");
+                                makeButtonsDisabled();
+                                break;
+                            }
+
+                            if (message.equals("defeat")) {
+                                upperTextField.setText("You lost :(");
+                                textfield.setText("");
+                                makeButtonsDisabled();
+                                break;
+                            }
+
+                        }
+                    }).start();
+
+        } catch (IOException exc) {
+            Logger.error(exc.toString());
+        }
+    }
+
+    private void updateButton(JButton button, String buttonText) {
+        Color color = buttonText.equals("X") ? Settings.button_red_color : Settings.button_blue_color;
+        button.setForeground(color);
+        button.setText(buttonText);
+
     }
 
     class ButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            for (JButton button : buttons) {
-                if (event.getSource() == button) {
-                    if (firstPlayerTurn) {
-                        if (button.getText().equals("")) {
-                            updateButton(
-                                    button,
-                                    Settings.button_red_color,
-                                    "X",
-                                    "O turn");
-                            firstPlayerTurn = false;
-                        }
-                    }
-
-                    else {
-                        if (button.getText().equals("")) {
-                            updateButton(
-                                    button,
-                                    Settings.button_blue_color,
-                                    "O",
-                                    "X turn");
-                            firstPlayerTurn = true;
-                        }
-                    }
+            for (int index = 0; index < Settings.TOTAL_BUTTONS; index++) {
+                if (event.getSource() == buttons[index]) {
+                    output.println(index);
                 }
             }
-            // Consider draw case
-            if (isBoardFull() && !winnerExists) {
-                textfield.setText("Draw");
-                makeButtonsDisabled();
-            }
-        }
-
-        private void updateButton(JButton button, Color color, String buttonText, String textFieldText) {
-            button.setForeground(color);
-            button.setText(buttonText);
-            textfield.setText(textFieldText);
-            check();
-
-        }
-
-        private boolean isBoardFull() {
-            for (JButton button : buttons) {
-                if (button.getText().equals("")) {
-                    return false;
-                }
-            }
-            return true;
         }
     }
 
