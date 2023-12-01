@@ -1,7 +1,10 @@
-package frames;
+package client;
 
 import java.awt.*;
 import javax.swing.*;
+
+import settings.Settings;
+
 import java.awt.event.*;
 
 public class LoginFrame extends JFrame implements ActionListener {
@@ -94,7 +97,7 @@ public class LoginFrame extends JFrame implements ActionListener {
             this.dispose();
             this.gameFrame.setVisible(true);
             this.gameFrame.setUsername(enteredUsername);
-            this.gameFrame.initSockets();
+            this.gameFrame.initBackgroundEvents();
         }
 
     }

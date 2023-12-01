@@ -1,4 +1,5 @@
-package frames;
+package settings;
+
 
 import java.awt.*;
 
@@ -34,7 +35,6 @@ public class Settings {
         public static Font upperTextFieldFont = new Font(TEXT_FIELD_FONT_NAME,
                         Font.BOLD,
                         TEXT_FIELD_FONT_SIZE);
-                        
         public static Font usernameTextFieldFont = new Font(
                         TEXT_FIELD_FONT_NAME,
                         Font.BOLD,

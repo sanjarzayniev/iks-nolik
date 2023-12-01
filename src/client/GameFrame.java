@@ -1,11 +1,13 @@
-package frames;
-
+package client;
 import java.awt.*;
 import java.util.*;
+
 import javax.swing.*;
 
 import helpers.Logger;
-import server.ServerSettings;
+import server.ClientThreadHandler;
+import settings.ServerSettings;
+import settings.Settings;
 
 import java.awt.event.*;
 import java.io.IOException;
@@ -18,9 +20,9 @@ public class GameFrame extends JFrame {
 
     Random random = new Random();
     JPanel title_panel = new JPanel(), button_panel = new JPanel();
-    JLabel textfield = new JLabel(), upperTextField = new JLabel(), usernameLabel = new JLabel();
+    public JLabel textfield = new JLabel(), upperTextField = new JLabel(), usernameLabel = new JLabel();
 
-    JButton[] buttons = new JButton[Settings.TOTAL_BUTTONS];
+    public JButton[] buttons = new JButton[Settings.TOTAL_BUTTONS];
 
     // Socket handlers
     Scanner input;
@@ -105,13 +107,13 @@ public class GameFrame extends JFrame {
         textfield.setText("O wins");
     }
 
-    private void makeButtonsDisabled() {
+    public void makeButtonsDisabled() {
         for (JButton button : buttons) {
             button.setEnabled(false);
         }
     }
 
-    private void releaseButtons() {
+    public void releaseButtons() {
         for (JButton button : buttons) {
             button.setEnabled(true);
         }
@@ -121,81 +123,22 @@ public class GameFrame extends JFrame {
         this.usernameLabel.setText(username);
     }
 
-    public void initSockets() {
+    public void initBackgroundEvents() {
         Socket socket;
         try {
             socket = new Socket(ServerSettings.SERVER_HOST, ServerSettings.SERVER_PORT);
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
-            new Thread(
-                    () -> {
-                        String myMark = "", opponentMark = "";
-                        while (input.hasNextLine()) {
-                            String message = input.nextLine();
-                            Logger.info("Received: " + message);
 
-                            if (message.equals("wait")) {
-                                upperTextField.setText("Wait...");
-                                makeButtonsDisabled();
-                            }
-
-                            if (message.equals("your_move")) {
-                                upperTextField.setText("Your Move");
-                                releaseButtons();
-                            }
-
-                            if (message.startsWith("your_mark")) {
-                                myMark = message.split(":")[1];
-                                textfield.setText(myMark);
-                            }
-
-                            if (message.startsWith("opponent_moved")) {
-                                int buttonIndex = Integer.parseInt(message.split(":")[1]);
-                                opponentMark = myMark.equals("X") ? "O" : "X";
-                                upperTextField.setText("Your move");
-                                updateButton(
-                                        buttons[buttonIndex],
-                                        opponentMark);
-                                releaseButtons();
-                            }
-
-                            if (message.startsWith("valid_move")) {
-                                int buttonIndex = Integer.parseInt(message.split(":")[1]);
-                                updateButton(buttons[buttonIndex], myMark);
-                                upperTextField.setText("Wait...");
-                                makeButtonsDisabled();
-                            }
-
-                            if (message.equals("draw")) {
-                                upperTextField.setText("Draw!");
-                                textfield.setText("");
-                                makeButtonsDisabled();
-                                break;
-                            }
-
-                            if (message.equals("victory")) {
-                                upperTextField.setText("You Won!");
-                                textfield.setText("");
-                                makeButtonsDisabled();
-                                break;
-                            }
-
-                            if (message.equals("defeat")) {
-                                upperTextField.setText("You lost :(");
-                                textfield.setText("");
-                                makeButtonsDisabled();
-                                break;
-                            }
-
-                        }
-                    }).start();
+            new Thread(new ClientThreadHandler(input, this)).start();
+            
 
         } catch (IOException exc) {
             Logger.error(exc.toString());
         }
     }
 
-    private void updateButton(JButton button, String buttonText) {
+    public void updateButton(JButton button, String buttonText) {
         Color color = buttonText.equals("X") ? Settings.button_red_color : Settings.button_blue_color;
         button.setForeground(color);
         button.setText(buttonText);

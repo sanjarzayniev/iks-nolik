@@ -1,14 +1,15 @@
 import java.net.*;
 import java.util.*;
 import javax.swing.*;
+
+import settings.ServerSettings;
+
 import java.io.IOException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.*;
-
-import server.ServerSettings;
 
 public class Server extends JFrame {
     // Player constants

@@ -1,4 +1,5 @@
-package server;
+package settings;
+
 
 public class ServerSettings {
         public final static int SERVER_PORT = 2121,

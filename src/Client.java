@@ -1,5 +1,5 @@
-import frames.GameFrame;
-import frames.LoginFrame;
+import client.GameFrame;
+import client.LoginFrame;
 
 public class Client {
     public static void main(String[] args) throws Exception {
