@@ -7,7 +7,7 @@ public class Settings {
         public static final int TOTAL_BUTTONS = 9,
                         FRAME_SIZE = 600,
                         SLEEP_TIME = 2000,
-                        TEXT_FIELD_FONT_SIZE = 30,
+                        TEXT_FIELD_FONT_SIZE = 25,
                         USERNAME_FIELD_FONT_SIZE = 25,
                         BUTTON_FONT_SIZE = 100;
 

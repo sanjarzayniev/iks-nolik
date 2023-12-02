@@ -1,4 +1,4 @@
-package client;
+package frames;
 
 import java.awt.*;
 import java.util.*;
@@ -91,6 +91,8 @@ public class GameFrame extends JFrame {
         add(title_panel, BorderLayout.NORTH);
         add(button_panel);
     }
+
+    
 
     public void xWins(int a, int b, int c) {
         buttons[a].setBackground(Settings.button_green_color);
