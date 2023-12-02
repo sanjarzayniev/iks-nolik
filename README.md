@@ -34,15 +34,19 @@ $ java -cp lib/postgresql-42.7.0.jar src/Server.java
 ```
 
 TCP server is running on host `localhost` and port `2121`:
+<p align="center">
+    <img src="./assets/images/server_running.png">
+</p>
 
-![](./assets/images/server_running.png)
 
 > [!TIP]
 > Instead of running `Client.java`, you can use tools like `netcat`. But you will not have beautiful `GUI`.
 
 If client connects:
 
-![](./assets/images/server_client_connected.png)
+<p align="center">
+    <img src="./assets/images/server_client_connected.png">
+</p>
 
 > [!IMPORTANT]
 > If game ends, you need to restart both `Server.java` and `Client.java`.
