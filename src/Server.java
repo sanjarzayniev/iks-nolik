@@ -1,15 +1,13 @@
+import java.awt.*;
 import java.net.*;
 import java.util.*;
 import javax.swing.*;
-
-import settings.ServerSettings;
-
 import java.io.IOException;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.*;
+
+import helpers.Logger;
+import settings.ServerSettings;
 
 public class Server extends JFrame {
     // Player constants
@@ -83,7 +81,7 @@ public class Server extends JFrame {
         try {
             server = new ServerSocket(ServerSettings.SERVER_PORT, ServerSettings.PLAYERS_COUNT);
         } catch (IOException exc) {
-            System.out.println(exc.toString());
+            Logger.error(exc.toString());
             System.exit(ServerSettings.FAIL_STATUS_CODE);
         }
     }
@@ -101,8 +99,8 @@ public class Server extends JFrame {
             try {
                 players[index] = new Player(server.accept(), index);
                 runGame.execute(players[index]); // execute player thread
-            } catch (IOException ioException) {
-                System.out.println(ioException.toString());
+            } catch (IOException exc) {
+                Logger.error(exc.toString());
                 System.exit(ServerSettings.FAIL_STATUS_CODE);
             }
         }
@@ -131,7 +129,7 @@ public class Server extends JFrame {
             try {
                 otherPlayerTurn.await(); // wait for player's turn
             } catch (InterruptedException exception) {
-                System.out.println(exception.toString());
+                Logger.error(exception.toString());
             } finally {
                 gameLock.unlock(); // unlock game after waiting
             }
@@ -157,10 +155,12 @@ public class Server extends JFrame {
     }
 
     public boolean isOccupied(int location) {
+        // Check no element exists on spec. cell
         return board[location].equals(MARKS[PLAYER_X]) || board[location].equals(MARKS[PLAYER_O]);
     }
 
     public boolean hasWinner() {
+        // Check every line (diagonal ...) & if 3 of them equal
         return (!board[0].isEmpty() && board[0].equals(board[1]) && board[0].equals(board[2]))
                 || (!board[3].isEmpty() && board[3].equals(board[4]) && board[3].equals(board[5]))
                 || (!board[6].isEmpty() && board[6].equals(board[7]) && board[6].equals(board[8]))
@@ -184,6 +184,8 @@ public class Server extends JFrame {
         return hasWinner() || isBoardFull();
     }
 
+    // Inner defined Player Runnable Thread
+    // handle move, validate & check for results
     private class Player implements Runnable {
         private final Socket connection;
         private Scanner input; // input from client
@@ -201,7 +203,7 @@ public class Server extends JFrame {
                 input = new Scanner(connection.getInputStream());
                 output = new Formatter(connection.getOutputStream());
             } catch (IOException ioException) {
-                System.out.println(ioException.toString());
+                Logger.error(ioException.toString());
                 System.exit(ServerSettings.FAIL_STATUS_CODE);
             }
         }
@@ -231,7 +233,7 @@ public class Server extends JFrame {
                             otherPlayerConnected.await();
                         }
                     } catch (InterruptedException exception) {
-                        System.out.println(exception.toString());
+                        Logger.error(exception.toString());
                     } finally {
                         gameLock.unlock(); // unlock game after second player
                     }
@@ -239,6 +241,7 @@ public class Server extends JFrame {
                     output.format("your_move\n");
                     output.flush();
                 } else {
+                    // send Wait message, block client buttons
                     output.format("wait\n");
                     output.flush();
                 }
@@ -249,6 +252,7 @@ public class Server extends JFrame {
                     if (input.hasNext()) {
                         location = input.nextInt();
                     }
+                    // Check for array index error
                     if (location >= board.length) {
                         output.format("invalid_move\n");
                         output.flush();
@@ -270,7 +274,7 @@ public class Server extends JFrame {
                 try {
                     connection.close();
                 } catch (IOException ioException) {
-                    System.out.println(ioException.toString());
+                    Logger.error(ioException.toString());
                     System.exit(ServerSettings.FAIL_STATUS_CODE);
                 }
             }

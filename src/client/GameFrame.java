@@ -1,4 +1,5 @@
 package client;
+
 import java.awt.*;
 import java.util.*;
 
@@ -27,6 +28,8 @@ public class GameFrame extends JFrame {
     // Socket handlers
     Scanner input;
     PrintWriter output;
+
+    public boolean isWaiting;
 
     public GameFrame() {
         initFrame();
@@ -130,16 +133,15 @@ public class GameFrame extends JFrame {
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
 
-            new Thread(new ClientThreadHandler(input, this)).start();
-            
+            new Thread(new ClientThreadHandler(input, this, usernameLabel.getText())).start();
 
         } catch (IOException exc) {
             Logger.error(exc.toString());
         }
     }
 
-    public void updateButton(JButton button, String buttonText) {
-        Color color = buttonText.equals("X") ? Settings.button_red_color : Settings.button_blue_color;
+    public void updateButton(JButton button, String buttonText, String myMark) {
+        Color color = myMark == buttonText ? Settings.button_blue_color : Settings.button_red_color;
         button.setForeground(color);
         button.setText(buttonText);
 
@@ -150,7 +152,9 @@ public class GameFrame extends JFrame {
         public void actionPerformed(ActionEvent event) {
             for (int index = 0; index < Settings.TOTAL_BUTTONS; index++) {
                 if (event.getSource() == buttons[index]) {
-                    output.println(index);
+                    if (!isWaiting) {
+                        output.println(index);
+                    }
                 }
             }
         }
