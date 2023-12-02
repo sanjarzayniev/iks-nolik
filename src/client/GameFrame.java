@@ -150,11 +150,13 @@ public class GameFrame extends JFrame {
     class ButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
+            if (isWaiting) {
+                return; // skip
+            }
+
             for (int index = 0; index < Settings.TOTAL_BUTTONS; index++) {
                 if (event.getSource() == buttons[index]) {
-                    if (!isWaiting) {
-                        output.println(index);
-                    }
+                    output.println(index);
                 }
             }
         }
