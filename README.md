@@ -93,14 +93,14 @@ If Postgres driver does not exist on your Java classpath, you should specify it:
 $ java -cp lib/postgresql-42.7.0.jar src/Server.java
 ```
 
-TCP server is running on host `localhost` and port `2121`:
+TCP(not UDP) server is running on host `localhost` and port `2121`:
 
 <p align="center">
     <img src="./assets/images/server_running.png">
 </p>
 
 > [!TIP]
-> Instead of running `Client.java`, you can use tools like `netcat`. But you will not have a beautiful `GUI`.
+> Instead of running `Client.java`, you can use tools like `netcat` or `telnet`. But you will not have a beautiful `GUI`.
 
 If a client connects:
 
@@ -110,3 +110,13 @@ If a client connects:
 
 > [!IMPORTANT]
 > If the game ends, you need to restart both `Server.java` and `Client.java`.
+
+> [!NOTE]
+> Server will control the entire game, GUI should handle and represent it. There are several types of server-side events to control the game:
+* `wait` - blocks client interaction with GUI.
+* `your_move` - unblocks a client.
+* `your_mark` - after successful login, the server will send the client's mark (X or O).
+* `opponent_moved` - event for synchronizing current players board with opponent's.
+* `valid_move` and `invalid_move` - status of last move.
+* `victory` and `defeat` - each of the clients will get their own (e.g. if (1) gets `victory`, (2) should get `defeat`).
+* `draw` - friendship.
