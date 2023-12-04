@@ -95,8 +95,10 @@ public class LoginFrame extends JFrame implements ActionListener {
                     JOptionPane.INFORMATION_MESSAGE,
                     icon);
             this.dispose();
+            // Make game frame visible
             this.gameFrame.setVisible(true);
             this.gameFrame.setUsername(enteredUsername);
+            // establish connection with server
             this.gameFrame.initBackgroundEvents();
         }
 

@@ -92,35 +92,9 @@ public class GameFrame extends JFrame {
         add(button_panel);
     }
 
-    
-
-    public void xWins(int a, int b, int c) {
-        buttons[a].setBackground(Settings.button_green_color);
-        buttons[b].setBackground(Settings.button_green_color);
-        buttons[c].setBackground(Settings.button_green_color);
-
-        this.makeButtonsDisabled();
-        textfield.setText("X wins");
-    }
-
-    public void oWins(int a, int b, int c) {
-        buttons[a].setBackground(Settings.button_green_color);
-        buttons[b].setBackground(Settings.button_green_color);
-        buttons[c].setBackground(Settings.button_green_color);
-
-        this.makeButtonsDisabled();
-        textfield.setText("O wins");
-    }
-
     public void makeButtonsDisabled() {
         for (JButton button : buttons) {
             button.setEnabled(false);
-        }
-    }
-
-    public void releaseButtons() {
-        for (JButton button : buttons) {
-            button.setEnabled(true);
         }
     }
 
@@ -129,12 +103,17 @@ public class GameFrame extends JFrame {
     }
 
     public void initBackgroundEvents() {
+        // Establish connection with TCP server.
+        // Run thread in order to handle background events
         Socket socket;
         try {
+            // Create client socket
             socket = new Socket(ServerSettings.SERVER_HOST, ServerSettings.SERVER_PORT);
+            // Handle input and output streams
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
 
+            // Run client-side thread
             new Thread(new ClientThreadHandler(input, this, usernameLabel.getText())).start();
 
         } catch (IOException exc) {
@@ -143,6 +122,7 @@ public class GameFrame extends JFrame {
     }
 
     public void updateButton(JButton button, String buttonText, String myMark) {
+        // Decide color
         Color color = myMark == buttonText ? Settings.button_blue_color : Settings.button_red_color;
         button.setForeground(color);
         button.setText(buttonText);
@@ -153,9 +133,11 @@ public class GameFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent event) {
             if (isWaiting) {
-                return; // skip
+                return; // skip, do not send anything.
             }
 
+            // Otherwise, find button, send its location
+            // to game server, server will check for valid move
             for (int index = 0; index < Settings.TOTAL_BUTTONS; index++) {
                 if (event.getSource() == buttons[index]) {
                     output.println(index);

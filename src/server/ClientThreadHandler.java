@@ -1,18 +1,15 @@
 package server;
 
-import java.util.Scanner;
-
-import javax.sound.sampled.Clip;
-import javax.swing.ImageIcon;
-
-import frames.GameFrame;
-
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.AudioInputStream;
-
-import helpers.Database;
-import helpers.Logger;
 import java.io.*;
+import java.util.Scanner;
+import javax.swing.ImageIcon;
+import javax.sound.sampled.Clip;
+
+import javax.sound.sampled.*;
+
+import helpers.Logger;
+import frames.GameFrame;
+import helpers.Database;
 
 public class ClientThreadHandler implements Runnable {
     private Database db;
@@ -26,9 +23,9 @@ public class ClientThreadHandler implements Runnable {
 
     String winSound = new String("win.wav");
     String loseSound = new String("lose.wav");
-    String invalidMoveSound = new String("invalid_move.wav");
     String moveSound = new String("move.wav");
     String drawSound = new String("draw.wav");
+    String invalidMoveSound = new String("invalid_move.wav");
 
     public ClientThreadHandler(Scanner input, GameFrame frame, String username) {
         this.input = input;
@@ -162,7 +159,7 @@ public class ClientThreadHandler implements Runnable {
             clip.open(audioInput);
             clip.start();
         } catch (Exception exc) {
-            exc.printStackTrace();
+            Logger.error(exc.toString());
         }
     }
 
