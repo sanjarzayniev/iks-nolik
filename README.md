@@ -1,4 +1,4 @@
-# **🎲 Iks-nolik**
+# **🎲 iks-nolik**
 
 <p align="center">
     <img src="./assets/images/game_intro.png">
