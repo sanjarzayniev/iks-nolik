@@ -17,7 +17,7 @@
 Dependencies:
 
 - Java SWING
-- Openjdk 17.0.8
+- OpenJDK 17.0.8
 - OpenJDK Runtime Environment
 - OpenJDK 64-Bit Server VM
 - Assets like `icons` and `sound` effects
@@ -31,7 +31,7 @@ $ java src/Client.java
 ```
 
 > [!IMPORTANT]
-> You should configure your environment. There are many imports from internal modules, you should specify your class path. Otherwise, it will not run properly. It is better to use some `IDE` which will do it for you.
+> You should configure your environment. There are many imports from internal modules, you should specify your classpath. Otherwise, it will not run properly. It is better to use some `IDE` which will do it for you.
 
 ## **🔓 Login Screen**
 
@@ -57,7 +57,7 @@ Simple, minimalistic. It can handle exceptions:
     <img src="./assets/images/game-frame.png">
 </p>
 
-Game will not start until opponent connects. `X` is mark of current player, `Wait...` status text sent by server and `sanjar` is the name of current user.
+The game will not start until the opponent connects. `X` is the mark of the current player, `Wait...` status text sent by the server and `sanjar` is the name of the current user.
 
 > [!NOTE]
 > The server should be started before the client.
@@ -73,7 +73,7 @@ Game will not start until opponent connects. `X` is mark of current player, `Wai
 Dependencies:
 
 - PostgreSQL (16)
-- Openjdk 17.0.8
+- OpenJDK 17.0.8
 - OpenJDK Runtime Environment
 - OpenJDK 64-Bit Server VM
 - PostgreSQL Driver For Java (`*.jar` file)
@@ -87,7 +87,7 @@ Using terminal:
 $ java src/Server.java
 ```
 
-If postgres driver does not exist on your java class path, you should specify it:
+If Postgres driver does not exist on your Java classpath, you should specify it:
 
 ```shell
 $ java -cp lib/postgresql-42.7.0.jar src/Server.java
@@ -100,13 +100,13 @@ TCP server is running on host `localhost` and port `2121`:
 </p>
 
 > [!TIP]
-> Instead of running `Client.java`, you can use tools like `netcat`. But you will not have beautiful `GUI`.
+> Instead of running `Client.java`, you can use tools like `netcat`. But you will not have a beautiful `GUI`.
 
-If client connects:
+If a client connects:
 
 <p align="center">
     <img src="./assets/images/server_client_connected.png">
 </p>
 
 > [!IMPORTANT]
-> If game ends, you need to restart both `Server.java` and `Client.java`.
+> If the game ends, you need to restart both `Server.java` and `Client.java`.
