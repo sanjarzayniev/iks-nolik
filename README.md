@@ -7,12 +7,11 @@
 > [!NOTE]
 > The multiplayer edition **Tic-Tac-Toe** game, made using Java SWING.
 >
-> - Sanjar Zayniev (`U2210264`)
-> - Abduaziz Ziyodov (`U2210265`)
+> - Sanjar Zayniev 
 
 ## **💫 Client**
 
-> Author: Sanjar Zayniev (`U2210264`)
+> Author: Sanjar Zayniev 
 
 Dependencies:
 
@@ -68,7 +67,7 @@ The game will not start until the opponent connects. `X` is the mark of the curr
 
 ## **Server**
 
-> Author: Abduaziz Ziyodov (`U2210265`)
+> Contributor: Abduaziz Ziyodov 
 
 Dependencies:
 
